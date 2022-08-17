@@ -10,8 +10,48 @@
     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
     <div id="main">
         <div id="title">Doping in Professional Bicycle Racing</div>
-        <div id="graph-box"></div>
+        <div id="graphBox"></div>
     </div>
+
+    <script>
+        const dataset = [
+                  [ 34,     78 ],
+                  [ 109,   280 ],
+                  [ 310,   120 ],
+                  [ 79,   411 ],
+                  [ 420,   220 ],
+                  [ 233,   145 ],
+                  [ 333,   96 ],
+                  [ 222,    333 ],
+                  [ 78,    320 ],
+                  [ 21,   123 ]
+                ];
+        const width = 500;
+        const height = 400;
+        const padding = 30;
+
+        const xScale = d3.scaleLinear()
+                            .domain([0, d3.max(dataset, (d)=>d[0])])
+                            .range([padding, width - padding])
+        const yScale = d3.scaleLinear()
+                            .domain([0, d3.max(dataset, (d)=>d[1])])
+                            .range([height - padding, padding]);
+        const svg = d3.select('body')
+                            .append('svg')
+                            .attr('width', width)
+                            .attr('height', height);
+        svg.selectAll('circle')
+                .data( dataset)
+                .enter()
+                .append('circle')
+                .attr('cx', (d)=>xScale(d[0]))
+                .attr('cy', (d)=>yScale(d[1]))
+                .attr('r', (d)=>5);
+
+
+
+
+    </script>
 
 </body>
 </html>
