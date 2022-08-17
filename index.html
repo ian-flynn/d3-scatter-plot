@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D3 Scatter Plot - Ian Flynn</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
@@ -14,6 +16,11 @@
     </div>
 
     <script>
+        const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json';
+        const width = 600;
+        const height = 500;
+        const padding = 60;
+
         const dataset = [
                   [ 34,     78 ],
                   [ 109,   280 ],
@@ -26,9 +33,9 @@
                   [ 78,    320 ],
                   [ 21,   123 ]
                 ];
-        const width = 500;
-        const height = 400;
-        const padding = 30;
+        // d3.json(url)
+        //     .then((d)=>)
+        
 
         const xScale = d3.scaleLinear()
                             .domain([0, d3.max(dataset, (d)=>d[0])])
@@ -36,19 +43,34 @@
         const yScale = d3.scaleLinear()
                             .domain([0, d3.max(dataset, (d)=>d[1])])
                             .range([height - padding, padding]);
-        const svg = d3.select('body')
+        const svg = d3.select('#graphBox')
                             .append('svg')
                             .attr('width', width)
                             .attr('height', height);
         svg.selectAll('circle')
-                .data( dataset)
+                .data(dataset)
                 .enter()
                 .append('circle')
                 .attr('cx', (d)=>xScale(d[0]))
                 .attr('cy', (d)=>yScale(d[1]))
-                .attr('r', (d)=>5);
+                .attr('r', 5);
 
+        svg.selectAll('text')
+                .data(dataset)
+                .enter()
+                .append('text')
+                .text((d)=>(d[0])+', '+d[1])
+                .attr('x', (d)=> xScale(d[0]+ 10))
+                .attr('y', (d)=> yScale(d[1]));
 
+        const xAxis = d3.axisBottom(xScale);
+        svg.append('g')
+            .attr('transform', 'translate(0,'+(height-padding)+')')
+            .call(xAxis);
+        const yAxis = d3.axisLeft(yScale);
+        svg.append('g')
+            .attr('transform', 'translate('+padding+',0)')
+            .call(yAxis)
 
 
     </script>
