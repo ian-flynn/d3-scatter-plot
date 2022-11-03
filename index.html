@@ -29,17 +29,43 @@
             var xScale = d3.scaleTime()
                        .domain([d3.min(datas, (d) => d.Year - 1),
                                 d3.max(datas, (d) => d.Year + 1)])
-                       .range([padding, w - padding])
+                       .range([padding, w - padding]);
             var xAxis = d3.axisBottom(xScale).tickFormat(d3.format('d'));
         
             svg.append('g')
                 .attr('transform', 'translate(0,' + (h - padding) + ')')
                 .call(xAxis)
                 .attr('id', 'x-axis');
+            
             // Y-AXIS
+            var timeMin = d3.min(datas, (d) => d.Time);
+            var timeMax = d3.max(datas, (d) => d.Time);
+            var timeFormat = d3.timeFormat('%M:%S');
+            var yScale = d3.scaleTime()
+                            .domain([0,8])
+                            .range([padding, h - padding]);
 
-            var yScale = 
-            })
+console.log(timeMin);
+console.log(timeFormat(timeMin));
+console.log(timeFormat('36:50'));
+
+            var yAxis = d3.axisLeft(yScale)
+                            .tickFormat(timeFormat);
+
+            svg.append('g')
+                .attr('transform', 'translate(' + padding + ', 0)')
+                .call(yAxis)
+
+            
+                
+
+
+
+
+
+
+
+          })
     </script>
 </body>
 </html>
