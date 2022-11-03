@@ -4,88 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D3 Scatter Plot - Ian Flynn</title>
+    <title>Doping Bikers</title>
     <link rel="stylesheet" href="./index.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type = "text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
     <div id="main">
-        <div id="title">Doping in Professional Bicycle Racing</div>
-        <div id="graphBox"></div>
+        <h1 id="title">Doping Bikers</h1>
+        <div id="svgBox"></div>
     </div>
-
     <script>
-        const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json';
-        const width = 600;
-        const height = 500;
-        const padding = 60;
-        const svg = d3.select('#graphBox')
-                            .append('svg')
-                            .attr('width', width)
-                            .attr('height', height);
+        var w = 800,
+            h = 800,
+            padding = 50,
+            svg = d3.select('#svgBox')
+                        .append('svg')
+                        .attr('width', w)
+                        .attr('height', h);
 
-        const dataset = [
-                  [ 34,     78 ],
-                  [ 109,   280 ],
-                  [ 310,   120 ],
-                  [ 79,   411 ],
-                  [ 420,   220 ],
-                  [ 233,   145 ],
-                  [ 333,   96 ],
-                  [ 222,    333 ],
-                  [ 78,    320 ],
-                  [ 21,   123 ]
-                ];
-        d3.json(url)
-            .then((data)=>{
-                const years = [];
-                const times = []
-                data.forEach(element => {
-                    years.push(element.Year);
-                    var splits = element.Time.split(':')
-
-                });
-                console.log(years);
-                console.log(splits)
-                const xScale = d3.scaleLinear()
-                                    .domain([(d3.min(years) - 1), d3.max(years)])
-                                    .range([padding, width - padding])
-                const yScale = d3.scaleLinear()
-                                    .domain([0, d3.max(dataset, (d)=>d[1])])
-                                    .range([height - padding, padding]);
+        d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
+          .then((datas) => {
+            // X-AXIS
+            var xScale = d3.scaleTime()
+                       .domain([d3.min(datas, (d) => d.Year - 1),
+                                d3.max(datas, (d) => d.Year + 1)])
+                       .range([padding, w - padding])
+            var xAxis = d3.axisBottom(xScale).tickFormat(d3.format('d'));
         
-                svg.selectAll('circle')
-                        .data(dataset)
-                        .enter()
-                        .append('circle')
-                        .attr('cx', (d)=>xScale(d[0]))
-                        .attr('cy', (d)=>yScale(d[1]))
-                        .attr('r', 5);
+            svg.append('g')
+                .attr('transform', 'translate(0,' + (h - padding) + ')')
+                .call(xAxis)
+                .attr('id', 'x-axis');
+            // Y-AXIS
 
-                svg.selectAll('text')
-                        .data(dataset)
-                        .enter()
-                        .append('text')
-                        .text((d)=>(d[0])+', '+d[1])
-                        .attr('x', (d)=> xScale(d[0]+ 10))
-                        .attr('y', (d)=> yScale(d[1]));
-
-                const xAxis = d3.axisBottom(xScale);
-                svg.append('g')
-                    .attr('transform', 'translate(0,'+(height-padding)+')')
-                    .call(xAxis);
-                const yAxis = d3.axisLeft(yScale);
-                svg.append('g')
-                    .attr('transform', 'translate('+padding+',0)')
-                    .call(yAxis)
-        })
-
+            var yScale = 
+            })
     </script>
-
 </body>
 </html>
-
-
-<!-- https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json -->
-<!-- https://github.com/d3/d3/blob/master/API.md#axes-d3-axis -->
