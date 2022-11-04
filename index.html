@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doping Bikers</title>
     <link rel="stylesheet" href="./index.css">
-    <script type = "text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
 </head>
 <body>
     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
@@ -21,10 +21,18 @@
             svg = d3.select('#svgBox')
                         .append('svg')
                         .attr('width', w)
-                        .attr('height', h);
+                        .attr('height', h),
+            tooltip = d3.select('#svgBox')
+                        .append('div')
+                        .attr('id', 'tooltip')
+                        .style('opacity', 0),
+            legend = d3.select('#svgBox')
+                        .append('div')
+                        .attr('id', 'legend');
 
         d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json')
           .then((datas) => {
+
             // X-AXIS
             var xScale = d3.scaleTime()
                        .domain([d3.min(datas, (d) => d.Year - 1),
@@ -38,24 +46,46 @@
                 .attr('id', 'x-axis');
             
             // Y-AXIS
+            datas.forEach((d) => {
+                var parsedTime = d.Time.split(':');
+                d.Time = new Date(1970, 0, 1, 0, parsedTime[0], parsedTime[1]);
+            })
             var timeMin = d3.min(datas, (d) => d.Time);
             var timeMax = d3.max(datas, (d) => d.Time);
             var timeFormat = d3.timeFormat('%M:%S');
             var yScale = d3.scaleTime()
-                            .domain([0,8])
+                            .domain([timeMin, timeMax])
                             .range([padding, h - padding]);
-
-console.log(timeMin);
-console.log(timeFormat(timeMin));
-console.log(timeFormat('36:50'));
-
             var yAxis = d3.axisLeft(yScale)
                             .tickFormat(timeFormat);
-
             svg.append('g')
                 .attr('transform', 'translate(' + padding + ', 0)')
                 .call(yAxis)
+                .attr('id', 'y-axis');
 
+            // DOTS
+            svg.selectAll('circle')
+                .data(datas)
+                .enter()
+                .append('circle')
+                .attr('cx', (d) => xScale(d.Year))
+                .attr('cy', (d) => yScale(d.Time))
+                .attr('r', 5)
+                .attr('class', 'dot')
+                .attr('data-xvalue', (d) => d.Year)
+                .attr('data-yvalue', (d) => d.Time)
+                .attr('index', (d, i) => i)
+            // TOOLTIPS
+                .on('mouseover', function (event, d) {
+                    var i = this.getAttribute('index');
+                    tooltip.transition().duration(200).style('opacity', 1);
+                    tooltip.html(
+                        'hey girl'
+                    )
+                })
+                .on('mouseout', function () {
+                    tooltip.transition().duration(200).style('opacity', 0);
+                });
             
                 
 
