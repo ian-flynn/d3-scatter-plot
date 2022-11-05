@@ -3,11 +3,18 @@
     padding: 0;
 }
 body {
-    background: #f6d5d5; ;
+    background: #f6d5d5;
 }
 #main {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 50px;
+}
+#svgBox {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 svg {
     background: #b08fbb;
@@ -18,6 +25,7 @@ svg {
     align-items: center;
     justify-content: center;
     position: absolute;
+    text-align: center;
     min-width: 120px;
     max-width: 150px;
     min-height: 50px;
@@ -25,3 +33,23 @@ svg {
     border-radius: 5px;
     padding: 10px;
 }
+#legend {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-end;
+    justify-content: flex-start;
+    position: absolute;
+    background: #f6d5d5;
+    font-size: 18px;
+    padding: 6px 22px;
+    border-radius: 5px;
+}
+.bikers {
+    color: #ca498c;
+    fill: #ca498c;
+}
+.dopers {
+    color: #8b2f8a;
+    fill: #8b2f8a;
+}
+

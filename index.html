@@ -16,7 +16,7 @@
     <script>
         var w = 800,
             h = 800,
-            padding = 50,
+            padding = 80,
             svg = d3.select('#svgBox')
                         .append('svg')
                         .attr('width', w)
@@ -27,7 +27,9 @@
                         .style('opacity', 0),
             legend = d3.select('#svgBox')
                         .append('div')
-                        .attr('id', 'legend'),
+                        .attr('id', 'legend')
+                        .style('left', 620 + 'px')
+                        .style('top', 300 + 'px'),
             title = svg.append('text')
                         .attr('x', 375)
                         .attr('y', 69)
@@ -86,7 +88,7 @@
                 .attr('class', 'dot')
                 .attr('data-xvalue', (d) => d.Year)
                 .attr('data-yvalue', (d) => d.Time)
-                .attr('fill', (d) => (d.Doping ? '#8b2f8a' : '#ca498c'))
+                .attr('class', (d) => (d.Doping ? 'dopers' : 'bikers'))
                 .attr('index', (d, i) => i)
             // TOOLTIPS
                 .on('mouseover', function (event, d) {
@@ -95,13 +97,15 @@
                     tooltip.html(d.Name + '<br />' + (timeFormat(d.Time)) + ' - ' 
                                  + d.Year + (d.Doping ? '<br/><br/>' + d.Doping : ''))
                             .attr('data-year', d.Year)
-                            .style('left', event.pageX +10 + 'px')
-                            .style('top', event.pageY + 'px');
+                            .style('left', (xScale(d.Year)) + 20+'px')
+                            .style('top', yScale(d.Time) + 'px');
                 })
                 .on('mouseout', function () {
                     tooltip.transition().duration(100).style('opacity', 0);
                 });
-
+            // LEGEND
+            legend.html('<p>Dopers - <span class="dopers circle">&#x25C9</span></p></p>'
+                        +'<p>Bikers - <span class="bikers circle">&#x25C9</span></p>')
           })
     </script>
 </body>
