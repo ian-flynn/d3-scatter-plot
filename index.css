@@ -2,9 +2,22 @@
     margin: 0;
     padding: 0;
 }
+body {
+    background: #f6d5d5; ;
+}
 #main {
     text-align: center;
 }
 svg {
-    background: pink;
+    background: #b08fbb;;
+}
+.dot {
+    fill: #8b2f8a;
+}
+#tooltip {
+    display: flex;
+    position: absolute;
+    width: 150px;
+    height: 80px;
+    background: #ca498c;
 }
