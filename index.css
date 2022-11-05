@@ -7,12 +7,11 @@ body {
 }
 #main {
     text-align: center;
+    margin-top: 50px;
 }
 svg {
-    background: #b08fbb;;
-}
-.dot {
-    fill: #8b2f8a;
+    background: #b08fbb;
+    border-radius: 9px;
 }
 #tooltip {
     display: flex;
